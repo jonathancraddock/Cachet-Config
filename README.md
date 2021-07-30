@@ -6,6 +6,14 @@ See: [Cachet](https://github.com/cachethq/Cachet)
 
 *coming soon!* ;-)
 
+## API Examples
+
+Update status of a component:  
+```bash
+curl -X PUT -H "Content-Type: application/json" -H "X-Cachet-Token: API-KEY-HERE" -d '{"status":1}' "https://cachet.example.com/api/v1/components/1"
+```
+^- *in this example, set component 1 to status of 'operational'*
+
 -----
 
 **CSS Backup**
@@ -19,7 +27,7 @@ body.status-page {
     font-size: 1.66em;
 }
 
-/* styles the gov.uk black header bar */
+/* styles the black header bar */
 .header-banner {
     background-color: black;
     color: #fdfdfd;
@@ -40,7 +48,7 @@ body.status-page {
   margin-bottom: 17px;
 }
 
-/* white bold text on black header bar, currently "GOV.UK" */
+/* white bold text on black header bar */
 .header-link {
   font-weight: bolder;
   font-size: x-large;
@@ -49,7 +57,7 @@ body.status-page {
   font-family: GDS-Transport-Bold;
 }
 
-/* this is the "about" box */
+/* this is the "about-app" box */
 body.status-page .about-app {
   margin-bottom: 20px;
   background-color: #1d70b8;
@@ -57,13 +65,13 @@ body.status-page .about-app {
   color: white;
 }
 
-/* targets the "about" markdown, which I've put on top of gov.uk blue */
+/* targets the "about-app" markdown */
 div.about-app p, strong {
   color: white !important;
   padding-top: 8px;
 }
 
-/* targets links inside of the "about" blue box */
+/* targets links inside of the "about-app" blue panel */
 div.about-app p a {
   color: #c4bbff;
   text-decoration: none;
@@ -96,7 +104,8 @@ div.section-timeline h4 {
   font-size: medium;
 }
 
-/* targets the "About This Page" default title, and hides it */
+/* targets the "About This Page" default title */
+/* currently hiding this title, duplication    */
 div.about-app .h2, h2 {
   font-size: 4rem;
   line-height: 0.7;
@@ -105,18 +114,18 @@ div.about-app .h2, h2 {
   display: none;
 }
 
-/* Tightens up the spacing at the beginning of the "previous incidents" section */
+/* tightens up the spacing at the beginning of the "previous incidents" section */
 body.status-page .timeline .content-wrapper {
     margin-top: 0px;
     margin-bottom: 32px;
 }
 
-/* Slightly tightens up the "previous incident" text boxes */
+/* tightens up the "previous incident" text boxes */
 body.status-page h1, body.status-page h2, body.status-page h3, body.status-page h4, body.status-page h5 {
     margin-bottom: 18px;
 }
 
-/* Prevents group title being overridden by white text heading defaults */
+/* prevents group title being overridden by white text heading defaults */
 .list-group-item strong {
     color: #333 !important;
 }
