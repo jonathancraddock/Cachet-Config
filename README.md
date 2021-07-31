@@ -4,9 +4,9 @@ See: [Cachet](https://github.com/cachethq/Cachet)
 
 ## Installing on Ubuntu 20 LTS
 
-I don't see many people complaining about the installation instructions, so maybe it's just me, but I tried multiple times with the official instructions, various blog posts, and then tried the Docker version. Basically nothing worked as expected. However, the guide on https://websiteforstudents.com/ does appear to work ok, and I've summarised my steps below.
+I don't see many people complaining about the installation instructions, so maybe it's just me, but I tried multiple times with the official instructions, and with guides on various blog posts, and then tried the Docker version. Basically nothing worked as expected. However, the guide on https://websiteforstudents.com/install-cachet-status-platform-on-ubuntu-16-04-18-04-with-apache2-mariadb-and-php-7-2/ does appear to work ok, and I've summarised my steps below.
 
-Started with a clean Ubuntu 20 LTS install. I created a single sudo user and ran the usual updates. Took a snapshot here in case I needed to revert the setup, again!
+Started with a clean Ubuntu 20 LTS install. I created a single sudo user and ran the usual updates. Took a snapshot here, in case I needed to revert the setup, again!
 
 #### Apache
 
@@ -43,7 +43,7 @@ exit;
 
 #### PHP
 
-There is a variety of conflicting advice around PHP versions. I tried 7.2 and it appears to work.
+There is a variety of conflicting advice around PHP versions. I tried 7.2, as per this guide, and it appears to work ok.
 
 ```bash
 sudo apt-get install software-properties-common
@@ -83,6 +83,114 @@ GRANT ALL ON cachetdb.* TO 'cachetdbuser'@'localhost' IDENTIFIED BY '****' WITH 
 FLUSH PRIVILEGES;
 EXIT;
 ```
+
+#### Cachet App
+
+```bash
+curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
+cd /var/www/html
+sudo git clone -b 2.4 --single-branch https://github.com/cachethq/Cachet.git cachet
+sudo cp /var/www/html/cachet/.env.example /var/www/html/cachet/.env
+```
+^- *I'd normally install higher than the default html folder, but after all the preceeding hassle I was following their guide exactly...*
+
+Edit the env file, `sudo nano /var/www/html/cachet/.env`.
+
+```bash
+DB_HOST=localhost
+DB_DATABASE=cachetdb
+DB_USERNAME=cachetdbuser
+DB_PASSWORD=****
+```
+
+I believe it's bad practice to run Composer with sudo, there may be a warning? I accepted it with a 'Y'.
+
+```bash
+cd /var/www/html/cachet
+sudo composer install --no-dev -o
+```
+
+Answer "no" to the two prompts on the Cachet install.
+
+```bash
+sudo php artisan key:generate
+sudo php artisan cachet:install
+```
+^- *if you want to check, the key should now be written into the `.env` file.*
+
+Reset ownerships and permissions.
+
+```bash
+sudo chown -R www-data:www-data /var/www/html/cachet/
+sudo chmod -R 755 /var/www/html/cachet/
+```
+^- *Surely this is far too generous?! These were recommended by the install guide, but in production I'd question this owenership, and I think only the `cache` and `storage` folders need to be writable. Possibly also `database`, if you're using sqlite.*
+
+#### Apache Conf
+
+Create a conf file.
+
+```bash
+sudo nano /etc/apache2/sites-available/cachet.conf
+```
+
+Their suggestion:
+
+```bash
+<VirtualHost *:80>
+     ServerAdmin cachet@example.com
+     DocumentRoot /var/www/html/cachet/public
+     ServerName cachet.example.com
+     ServerAlias cachet.example.com
+
+     <Directory /var/www/html/cachet/public>
+          Options FollowSymlinks
+          AllowOverride All
+          Require all granted
+     </Directory>
+
+     ErrorLog ${APACHE_LOG_DIR}/error.log
+     CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+     <Directory /var/www/html/cachet/public>
+            RewriteEngine on
+            RewriteBase /
+            RewriteCond %{REQUEST_FILENAME} !-f
+            RewriteRule ^(.*) index.php [PT,L]
+    </Directory>
+</VirtualHost>
+```
+
+Enable the site.
+
+```bash
+sudo a2ensite cachet.conf
+sudo a2enmod rewrite
+sudo systemctl restart apache2
+```
+
+#### Let's Encrypt
+
+And secure the site.
+
+```bash
+sudo snap install --classic certbot
+sudo ln -s /snap/bin/certbot /usr/bin/certbot
+sudo certbot --apache
+```
+
+#### In Browser Config
+
+You should now be able to complete the setup in your browser.
+
+```
+Cache Driver - database
+Queue Driver - none
+Session Driver - database
+```
+^- *the following driver selection works, but may not be optimal?*
+
+-----
 
 ## API Examples
 
