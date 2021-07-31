@@ -8,6 +8,8 @@ I don't see many people complaining about the installation instructions, so mayb
 
 Started with a clean Ubuntu 20 LTS install. I created a single sudo user and ran the usual updates. Took a snapshot here, in case I needed to revert the setup, again!
 
+> There's a useful guide here: https://www.digitalocean.com/community/tutorials/how-to-install-the-apache-web-server-on-ubuntu-20-04 and do remember to *enable* the services, as you presumably want them to auto start after a reboot.
+
 #### Apache
 
 ```bash
