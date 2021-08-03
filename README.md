@@ -1,8 +1,14 @@
-# Some Notes on Cachet Config
+# Notes on Cachet Config
 
 See: [Cachet](https://github.com/cachethq/Cachet)
 
-## Installing on Ubuntu 20 LTS
+Contents:  
+* [Installing On Ubuntu 20](#installing-on-ubuntu-20)  
+* [Page Design](#page-design)  
+* [API Examples](#api-examples)  
+* [References](#references)  
+
+## Installing on Ubuntu 20
 
 I don't see many people complaining about the installation instructions, so maybe it's just me, but I tried multiple times with the official instructions, and with guides on various blog posts, and then tried the Docker version. Basically nothing worked as expected. However, the guide on https://websiteforstudents.com/install-cachet-status-platform-on-ubuntu-16-04-18-04-with-apache2-mariadb-and-php-7-2/ does appear to work ok, and I've summarised my steps below.
 
@@ -191,6 +197,32 @@ Queue Driver - none
 Session Driver - database
 ```
 ^- *the following driver selection works, but may not be optimal?*
+
+-----
+
+## Page Design
+
+The file `/var/www/cachet/resources/views/index.blade.php` contains the Laravel blade template for the main page layout. For example, if you need the page sections to appear in a different order.
+
+```php
+@extends('layout.master')
+
+@section('content')
+@include('partials.modules.messages')
+@include('partials.modules.status')
+@include('partials.about-app')
+@include('partials.modules.components')
+@include('partials.modules.metrics')
+@include('partials.modules.stickied')
+@include('partials.modules.scheduled')
+@include('partials.modules.timeline')
+@stop
+
+@section('bottom-content')
+@include('partials.footer')
+@stop
+```
+^- *eg/ if you wanted the "about" panel to display above the "status" message, etc.*
 
 -----
 
