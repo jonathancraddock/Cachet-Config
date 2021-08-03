@@ -244,6 +244,57 @@ curl -X PUT -H "Content-Type: application/json" -H "X-Cachet-Token: API-KEY-HERE
 ```
 ^- *in this example, set component 1 to status of 'operational'*
 
+### Components:
+* `/api/v1/components` list all components
+* `/api/v1/components/1` query specific component
+* `/api/v1/components/groups` list all component groups
+* `/api/v1/components/groups/1` components in specified group 
+
+Component fields?
+```text
+"id": 1,
+"name": "Component Name",
+"description": "Description goes here",
+"link": "",
+"status": 1,
+"order": 0,
+"group_id": 1,
+"enabled": true,
+"meta": null,
+"created_at": "2021-07-29 18:51:27",
+"updated_at": "2021-08-03 12:19:47",
+"deleted_at": null,
+"status_name": "Operational",
+"tags": []
+```
+
+Group fields?
+```text
+"id": 1,
+"name": "Ancillary Wraps",
+"order": 0,
+"visible": 1,
+"collapsed": 0,
+"created_at": "2021-07-29 18:58:49",
+"updated_at": "2021-07-30 15:57:42",
+"enabled_components": [],
+"lowest_human_status": "Operational"
+```
+
+### Incidents:
+* `/api/v1/incidents` list all incidents
+* `/api/v1/incidents/1` query specific incident
+* `/api/v1/incidents/1/updates` list updates on specified incident
+* `/api/v1/incidents/1/updates/1` query specific update on specified incident
+
+### Maintenance:
+* ?
+
+### General:
+* `/api/v1/version` replies with version number
+* `/api/v1/ping` replies with "pong"
+* `api/v1/subscribers` (requires authentication)
+
 -----
 
 ## References
