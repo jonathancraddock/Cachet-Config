@@ -311,7 +311,7 @@ Testing a simple flow, with four nodes.
 
 ![](https://github.com/jonathancraddock/Cachet-Config/blob/03fb5a2aa5753cfdca7f78c206ac8e2c6cac4747/screencap/nodered-test-put.png)
 
-Using the function to set the URL, two headers, and the payload:
+The **function** can be used to set the URL, the two required headers, and the data object should be written to msg.payload.
 
 ```javascript
 msg.url = "https://cachet.example.com/api/v1/components/1";
@@ -326,9 +326,7 @@ msg.headers['X-Cachet-Token'] = 'API-KEY-HERE';
 return msg;
 ```
 
-Set the HTTP Request node to `PUT` and to return a `Parsed JSON Object`.
-
-In this test, set the `status` of component 1 to `operational`.
+Set the **HTTP Request** node to `PUT` and to return a `Parsed JSON Object`. In this example, the `status` of component 1 becomes set to `operational`.
 
 -----
 
