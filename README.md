@@ -224,6 +224,16 @@ The file `/var/www/cachet/resources/views/index.blade.php` contains the Laravel 
 ```
 ^- *eg/ if you wanted the "about" panel to display above the "status" message, etc.*
 
+Highlight the "Maintenance" section:
+
+```css
+.section-scheduled {
+  border: 1px solid #3929a8;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+```
+
 -----
 
 ## API Examples
