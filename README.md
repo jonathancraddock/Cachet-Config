@@ -343,6 +343,10 @@ In this test, set the `status` of component 1 to `operational`.
 * https://github.com/CachetHQ/Cachet 
 * https://docs.cachethq.io/docs/installing-cachet  
 
+### API
+
+* https://oipwg.github.io/cachetapi/CachetAPI.html (node.js API reference)  
+
 ### Let's Encrypt
 
 * https://certbot.eff.org/lets-encrypt/ubuntubionic-apache  
