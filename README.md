@@ -309,6 +309,8 @@ Testing a simple flow, with four nodes.
 * HTTP Request  
 * Debug  
 
+![](https://github.com/jonathancraddock/Cachet-Config/blob/03fb5a2aa5753cfdca7f78c206ac8e2c6cac4747/screencap/nodered-test-put.png)
+
 Using the function to set the URL, two headers, and the payload:
 
 ```javascript
