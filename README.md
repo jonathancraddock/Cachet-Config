@@ -6,6 +6,7 @@ Contents:
 * [Installing On Ubuntu 20](#installing-on-ubuntu-20)  
 * [Page Design](#page-design)  
 * [API Examples](#api-examples)  
+* [API NodeRED](#api-nodered)
 * [References](#references)  
 
 ## Installing on Ubuntu 20
@@ -294,6 +295,38 @@ Group fields?
 * `/api/v1/version` replies with version number
 * `/api/v1/ping` replies with "pong"
 * `api/v1/subscribers` (requires authentication)
+
+-----
+
+## API NodeRED
+
+### Proof of concept
+
+Testing a simple flow, with four nodes.
+
+* Inject  
+* Function  
+* HTTP Request  
+* Debug  
+
+Using the function to set the URL, two headers, and the payload:
+
+```javascript
+msg.url = "https://cachet.example.com/api/v1/components/1";
+
+msg.payload = {};
+msg.payload = {"status":1};
+
+msg.headers = {};
+msg.headers['Content-Type'] = 'application/json';
+msg.headers['X-Cachet-Token'] = 'API-KEY-HERE';
+
+return msg;
+```
+
+Set the HTTP Request node to `PUT` and to return a `Parsed JSON Object`.
+
+In this test, set the `status` of component 1 to `operational`.
 
 -----
 
