@@ -19,10 +19,10 @@ body.status-page {
     padding-top: 7px;
 }
 
-/* purlple 'highlight' bar below black header bar */
+/* purple 'highlight' bar below black header bar */
 .header-underline {
   background-color: #8a61c6;
-  height: 10px;
+  height: 8px;
   margin-bottom: 20px;
   margin-left: -5px;
   margin-right: -4px;
@@ -36,11 +36,21 @@ body.status-page {
   cursor: pointer;
 }
 
-/* crown logo on black header bar */
+/* active link clicked on header bar */
+.header-group:active, .header-group:focus {
+  display: inline-block;
+  background-color: #1115ff;
+  filter: invert();
+  padding: 0 0 14px 0;
+  cursor: pointer;
+}
+
+/* crown (SVG) logo on black header bar */
 .header-logo {
   height: 30px;
   width: auto;
   margin-top: 2px;
+  filter: invert();
 }
 
 /* white bold text, right of header logo */
@@ -102,6 +112,32 @@ div.about-app p:last-child a {
   bottom: -10px;
 }
 
+/* highlight the scheduled mainenance info panel */
+.section-scheduled {
+  border: 1px solid #3929a8;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+/* bold the "maintenance" panel heading */
+.panel-heading strong {
+  font-family: GDS-Transport-Bold;
+  font-size: 2rem;
+  color: #484848 !important;
+}
+
+/* bold the "component group" heading to match maintenance panel */
+.group-name strong {
+    font-family: GDS-Transport-Bold;
+    font-size: 2rem;
+    color: #484848 !important;
+}
+
+/* targets links in body of page, including incidents */
+.links {
+  color: #7266ba !important;
+}
+
 /* reduces spacing and bolds H1 title text */
 .h1, h1 {
   font-family: GDS-Transport-Bold;
@@ -161,3 +197,9 @@ body.status-page h1, body.status-page h2, body.status-page h3, body.status-page 
   border-radius: 6px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
+
+/* incident custom */
+.navbar { min-height:30px; }
+body.status-page .navbar-custom {margin-left: 100%; }
+.container > .navbar-collapse, .container > .navbar-header { display: none; }
+.navbar-right { display:none; }
