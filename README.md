@@ -251,7 +251,7 @@ curl -X PUT -H "Content-Type: application/json" -H "X-Cachet-Token: API-KEY-HERE
 * `/api/v1/components/groups` list all component groups
 * `/api/v1/components/groups/1` components in specified group 
 
-Component fields?
+#### Component fields?
 ```text
 "id": 1,
 "name": "Component Name",
@@ -269,10 +269,10 @@ Component fields?
 "tags": []
 ```
 
-Group fields?
+#### Group fields?
 ```text
 "id": 1,
-"name": "Ancillary Wraps",
+"name": "Group Name",
 "order": 0,
 "visible": 1,
 "collapsed": 0,
@@ -289,7 +289,7 @@ Group fields?
 * `/api/v1/incidents/1/updates/1` query specific update on specified incident
 
 ### Maintenance:
-* ?
+* (Don't know if this can be queried via their API?)
 
 ### General:
 * `/api/v1/version` replies with version number
