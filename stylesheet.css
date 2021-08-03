@@ -1,3 +1,6 @@
+/* Cachet Custom Stylesheet -> ./dashboard/settings/stylesheet */
+/* (JC) Backup available at -> https://github.com/jonathancraddock/Cachet-Config/blob/main/stylesheet.css */
+
 @font-face { font-family: GDS-Transport-Light; src: url(/fonts/gds-transport-light.woff2); }
 @font-face { font-family: GDS-Transport-Bold; src: url(/fonts/gds-transport-bold.woff2); }
 
@@ -7,7 +10,7 @@ body.status-page {
     font-size: 1.66em;
 }
 
-/* styles the gov.uk black header bar */
+/* styles the black header bar */
 .header-banner {
     background-color: black;
     color: #fdfdfd;
@@ -16,18 +19,18 @@ body.status-page {
     padding-top: 7px;
 }
 
-/* purlple bar below header bar */
+/* purlple 'highlight' bar below black header bar */
 .header-underline {
   background-color: #8a61c6;
   height: 10px;
   margin-bottom: 20px;
-  margin-left: -7px;
-  margin-right: -7px;
+  margin-left: -5px;
+  margin-right: -4px;
 }
 
 /* logo and link on header bar */
 .header-group:hover {
-  border-bottom: 1px solid white;
+  border-bottom: 2px solid white;
   display: inline-block;
   padding: 0 0 14px 0;
   cursor: pointer;
@@ -40,7 +43,7 @@ body.status-page {
   margin-top: 2px;
 }
 
-/* white bold text on black header bar, currently "GOV.UK" */
+/* white bold text, right of header logo */
 .header-link {
   font-weight: 600;
   font-size: 29px;
@@ -51,7 +54,7 @@ body.status-page {
   color: white;
 }
 
-/* this is the "about" box */
+/* re-style the "about-app" box, white on blue */
 body.status-page .about-app {
   margin-bottom: 20px;
   background-color: #1d70b8;
@@ -59,8 +62,8 @@ body.status-page .about-app {
   color: white;
 }
 
-/* targets the "about" markdown, which I've put on top of gov.uk blue */
-div.about-app p, strong {
+/* targets the "about-app" markdown, default white on blue */
+div.about-app p, div.about-app p strong {
   color: white !important;
   padding-top: 8px;
 }
@@ -79,12 +82,13 @@ div.about-app p a:hover {
   border-bottom: 2px solid #c4bbff;
 }
 
+/* required to enable positioning of 'refresh' button */
 div.about-app p:last-child {
   position: relative;
   padding-bottom: 32px;
 }
 
-/* targets 'final' link in about-app panel */
+/* targets 'refresh' button (final link) in "about-app" panel */
 div.about-app p:last-child a {
   color: #fff;
   text-decoration: none;
@@ -146,4 +150,14 @@ body.status-page h1, body.status-page h2, body.status-page h3, body.status-page 
 /* Prevents group title being overridden by white text heading defaults */
 .list-group-item strong {
     color: #333 !important;
+}
+
+/* style the pop-up tooltip */
+.tooltip {
+  background-color: #eadef0 !important;
+  border: 1px solid black;
+  padding: 7px !important;
+  cursor: pointer;
+  border-radius: 6px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
