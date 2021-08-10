@@ -7,6 +7,7 @@ Contents:
 * [Page Design](#page-design)  
 * [API Examples](#api-examples)  
 * [API NodeRED](#api-nodered)
+* [Timezone](#timezone)
 * [References](#references)  
 
 ## Installing on Ubuntu 20
@@ -15,7 +16,7 @@ I don't see many people complaining about the installation instructions, so mayb
 
 Started with a clean Ubuntu 20 LTS install. I created a single sudo user and ran the usual updates. Took a snapshot here, in case I needed to revert the setup, again!
 
-> There's a useful guide here: https://www.digitalocean.com/community/tutorials/how-to-install-the-apache-web-server-on-ubuntu-20-04 and do remember to *enable* the services, as you presumably want them to auto start after a reboot.
+> There's a useful guide here: https://www.digitalocean.com/community/tutorials/how-to-install-the-apache-web-server-on-ubuntu-20-04 and do remember to *enable* the services (Apache and MariaDB) as you presumably want them to auto start after a reboot.
 
 #### Apache
 
@@ -292,6 +293,8 @@ curl -X PUT -H "Content-Type: application/json" -H "X-Cachet-Token: API-KEY-HERE
 * `/api/v1/metrics` list all metrics  
 * `/api/v1/metrics/1` query a specific metric
 
+> If you make a POST request to `https://cachet.example.com/api/v1/metrics/1/points` supplying the API key and the data `{"value":75}` (for example) you're able to successfully log the data-point, but there appears to be an issue with UTC vs BST.
+
 ### Maintenance:
 * (Don't know if this can be queried via their API?)
 
@@ -334,6 +337,61 @@ Set the **HTTP Request** node to `PUT` and to return a `Parsed JSON Object`. In 
 
 -----
 
+## Timezone
+
+Some notes on diagnosing Cachet timezone issue. Use `timezonectl` or check `/etc/timezone`.
+
+```bash
+timedatectl
+
+               Local time: Tue 2021-08-10 10:12:34 UTC
+           Universal time: Tue 2021-08-10 10:12:34 UTC
+                 RTC time: Tue 2021-08-10 10:12:35
+                Time zone: Etc/UTC (UTC, +0000)
+System clock synchronized: yes
+              NTP service: active
+          RTC in local TZ: no
+```
+
+List available timezones with `timedatectl list-timezones`. In this case, I should be in the `Europe/London` timezone.
+
+```bash
+sudo timedatectl set-timezone Europe/London
+```
+
+> With this change alone, data-points still being logged 1 hour out; UTC, not BST.
+
+Looking at MariaDB.
+
+```bash
+sudo mysql -u root -p
+Select now();
+```
+^- *responds with UTC time*
+
+```mysql
+MariaDB [(none)]> show global variables like 'time_zone';
++---------------+--------+
+| Variable_name | Value  |
++---------------+--------+
+| time_zone     | SYSTEM |
++---------------+--------+
+1 row in set (0.004 sec)
+```
+
+Set to `SYSTEM` so maybe just needs a restart?
+
+```bash
+sudo systemctl restart mariadb
+sudo mysql -u root -p
+Select now();
+```
+^- *responds with BST*
+
+This represents an improvement. Now (for example) the URL `https://cachet.example.com/api/v1/metrics/2/points` reponds with data-points that have the correct timestamps. But, on the Cachet dashboard page, the graph still draws the points as if it were using UTC time.
+
+-----
+
 ## References
 
 ### A Working Installation Guide
@@ -348,6 +406,7 @@ Set the **HTTP Request** node to `PUT` and to return a `Parsed JSON Object`. In 
 ### API
 
 * https://oipwg.github.io/cachetapi/CachetAPI.html (node.js API reference)  
+* https://github.com/CachetHQ/Cachet/blob/2.4/docs/api/api-documentation.md (official docs, incomplete)  
 
 ### Let's Encrypt
 
