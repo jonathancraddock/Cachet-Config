@@ -288,6 +288,10 @@ curl -X PUT -H "Content-Type: application/json" -H "X-Cachet-Token: API-KEY-HERE
 * `/api/v1/incidents/1/updates` list updates on specified incident
 * `/api/v1/incidents/1/updates/1` query specific update on specified incident
 
+### Metrics
+* `/api/v1/metrics` list all metrics  
+* `/api/v1/metrics/1` query a specific metric
+
 ### Maintenance:
 * (Don't know if this can be queried via their API?)
 
