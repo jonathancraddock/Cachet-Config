@@ -339,7 +339,9 @@ Set the **HTTP Request** node to `PUT` and to return a `Parsed JSON Object`. In 
 
 ## Timezone
 
-Some notes on diagnosing Cachet timezone issue. Use `timezonectl` or check `/etc/timezone`.
+Some notes on diagnosing Cachet timezone graph display issue. Regardless of timezone, the graph insists on displaying in UTC, rather than BST. If you change your timezone to Australia, the graph shifts forward half a day, as you'd expect, but events are always shown as UTC. (Surely most 'end-users' want to see something more meaningful?)
+
+Use `timezonectl` or check `/etc/timezone`.
 
 ```bash
 timedatectl
@@ -389,6 +391,14 @@ Select now();
 ^- *responds with BST*
 
 This represents an improvement. Now (for example) the URL `https://cachet.example.com/api/v1/metrics/2/points` reponds with data-points that have the correct timestamps. But, on the Cachet dashboard page, the graph still draws the points as if it were using UTC time.
+
+In the `.env` the value `APP_TIMEZONE` is set to `UTC`. ALtering this to `Europe/London` seemed logical, but appears to prevent any new data-points from being logged. Setting it to `BST` allows data to be logged again, but the graph still displays them as `UTC`. Same with `Etc/GMT+1`.
+
+```bash
+APP_TIMEZONE=UTC
+```
+
+The customisation settings within the Cachet dashboard are showing "London" with the correct (BST) time, but this setting doesn't affect the display of the points on the graph.
 
 -----
 
