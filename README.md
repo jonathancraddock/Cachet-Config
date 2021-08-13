@@ -1,14 +1,19 @@
 # Notes on Cachet Config
 
-See: [Cachet](https://github.com/cachethq/Cachet)
+Official Project Page: [Cachet](https://github.com/cachethq/Cachet)
 
-Contents:  
-* [Installing On Ubuntu 20](#installing-on-ubuntu-20)  
-* [Page Design](#page-design)  
-* [API Examples](#api-examples)  
-* [API NodeRED](#api-nodered)
-* [Timezone](#timezone)
-* [References](#references)  
+-----
+
+| Contents  |
+| :---------- |
+| [Installing On Ubuntu 20](#installing-on-ubuntu-20)   |
+| [Page Design](#page-design)   |
+| [API Examples](#api-examples)   |
+| [API NodeRED](#api-nodered)   |
+| [Timezone](#timezone)   |
+| [References](#references)   |
+
+-----
 
 ## Installing on Ubuntu 20
 
@@ -339,7 +344,9 @@ Set the **HTTP Request** node to `PUT` and to return a `Parsed JSON Object`. In 
 
 ## Timezone
 
-Some notes on diagnosing Cachet timezone graph display issue. Regardless of timezone, the graph insists on displaying in UTC, rather than BST. If you change your timezone to Australia, the graph shifts forward half a day, as you'd expect, but events are always shown as UTC. (Surely most 'end-users' want to see something more meaningful?)
+***Some notes on diagnosing Cachet timezone graph display issue.***
+
+Regardless of timezone, the graph insists on displaying in UTC, rather than BST. If you change your timezone to Australia, the display of the graph shifts forward half a day, as you'd expect, but events are always shown as UTC. (Surely most 'end-users' want to see something more meaningful?)
 
 Use `timezonectl` or check `/etc/timezone`.
 
@@ -361,7 +368,7 @@ List available timezones with `timedatectl list-timezones`. In this case, I shou
 sudo timedatectl set-timezone Europe/London
 ```
 
-> With this change alone, data-points still being logged 1 hour out; UTC, not BST.
+With this change alone, data-points still being logged 1 hour out; UTC, not BST.
 
 Looking at MariaDB.
 
@@ -398,7 +405,22 @@ In the `.env` the value `APP_TIMEZONE` is set to `UTC`. ALtering this to `Europe
 APP_TIMEZONE=UTC
 ```
 
-The customisation settings within the Cachet dashboard are showing "London" with the correct (BST) time, but this setting doesn't affect the display of the points on the graph.
+The customisation settings within the Cachet dashboard are showing "London" with the correct (BST) time being shown, but this setting doesn't affect the display of the points on the graph.
+
+* Issues including `metrics UTC` -> https://github.com/CachetHQ/Cachet/issues?q=is%3Aissue+metrics+UTC  
+* Issues including `timezone` -> https://github.com/CachetHQ/Cachet/issues?q=is%3Aissue+timezone  
+
+I can't see any clean solution to this for now. There's a certain logic to UTC time and maybe it's "by design", but personally I think it feels like a bit of an oversight?
+
+![](https://github.com/jonathancraddock/Cachet-Config/blob/ac5da93ac7031d5f97b17c57d10f519c51d6df47/screencap/cachet-metric.png)
+^- *it would appear that no data was received after 8am?*
+
+```json
+{"id":45,"metric_id":2,"value":41,"counter":1,"created_at":"2021-08-13 08:33:30","updated_at":"2021-08-13 08:33:21","calculated_value":41}
+```
+^- *but the latest datapoint was sent at 8:33am*
+
+In summary, the points are correct. The last few values I sent (I'm POST'ing a random %'age value every hour) are 41, 82, 93, 29... you can see them correctly on the graph, but everything is offset by an hour.
 
 -----
 
